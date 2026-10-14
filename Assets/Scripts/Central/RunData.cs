@@ -9,7 +9,7 @@ public class RunData
 {
     public int HP = 100;
     public int gold = 50;
-    public int noAtual = 0;
+    public string noAtual="0";
     
     
     public List<string> deck= new List<string>(); //cartas
