@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "Nova_Carta", menuName = "Carta/CardData")]
+[CreateAssetMenu(fileName = "Nova_Carta", menuName = "Cards/CardData")]
 public class CardData : ScriptableObject
 {
     public string id;
