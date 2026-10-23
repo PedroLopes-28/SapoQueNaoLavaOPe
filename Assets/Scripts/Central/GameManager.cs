@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -9,7 +10,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Gman { get; private set; }
     public static RunData Run { get; private set; }
-
+    [SerializeField] public CardDatabase DeckJogador;
 
     private void Awake()
     {

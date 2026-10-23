@@ -6,11 +6,9 @@ public class EnemyData : ScriptableObject
 {
 
     public string id;
-    public int hp;
-    public List<string> CardEffects;
-    
-    
-    public List<CardEffect> effects;
+    public int HP;
+    public int maxHP;
+    [SerializeField] public List<CardEffect> actions;
 
 }
     
