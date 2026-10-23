@@ -13,7 +13,7 @@ public class RunData
     public string noAtual="0";
     
     
-    public List<string> deck= new List<string>(); //cartas
+    public List<string> deck= new List<string>(); //cartas do jogador
     public List<string> nosConcluidos= new List<string>();// nos que já foram feitos
     public List<string> legendary= new List<string>(); // cartas de custo 0, pode se escolher uma a cada turno para jogar
     public List<string> blessings = new List<string>(); //efeitos passivos permanentes
