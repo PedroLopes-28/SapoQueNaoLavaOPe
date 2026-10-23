@@ -15,6 +15,7 @@ MonoBehaviour:
   id: 2
   sprite: {fileID: 0}
   rarity: 0
+  desc: "D\xE1 5 de Bloqueio"
   custo: 1
   effects:
   - {fileID: 11400000, guid: e51b5516430e8584cb22802c0f86b872, type: 2}

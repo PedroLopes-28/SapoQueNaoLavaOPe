@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Gman { get; private set; }
     public static RunData Run { get; private set; }
-    [SerializeField] public CardDatabase DeckJogador;
+    [SerializeField] public CardDatabase deckJogador;
 
     private void Awake()
     {

@@ -33,11 +33,20 @@ public class BattleManager : MonoBehaviour
     //declara os visuais do jogador e inimigo
     [SerializeField] private BattleUnitVisual jogadorView;
     [SerializeField] private BattleUnitVisual inimigoView;
+
+    [SerializeField] private int nroCartasMao = 5;
     private List<CardData> Deckjogador = new List<CardData>();
+    private List<CardData> MaoJogador= new List<CardData>();
     private List<CardData> Descartes = new List<CardData>();
+    public int QtdDeck => Deckjogador.Count;
+    public int QtdMao => MaoJogador.Count;
+    public int QtdDescartes => Descartes.Count;
+    public int VelocidadeAtual => VelocidaddeAtual;
+    public IReadOnlyList<CardData> CartasNaMao => MaoJogador;
+    public event Action OnCartasAtualizadas;//avisa quando atualizar os elementos visuais
     
-    private int energiaAtual = 3;
-    private int maxEnergia = 3;
+    private int VelocidaddeAtual = 3;
+    private int maxVelocidadde = 3;
     public BattleState estadoAtual { get; private set; }
 
 
@@ -51,7 +60,13 @@ public class BattleManager : MonoBehaviour
         
         maxIndiceAcaoInimigo=inimigoEscolhido.actions.Count;//ve quantas ações no vetor de açoes do inimigo
 
-        Deckjogador = GameManager.Gman.DeckJogador.buscaTodas();//Pega todas as cartas do deck do jogador
+        Deckjogador = GameManager.Gman.deckJogador.buscaTodas();//Pega todas as cartas do deck do jogador
+        if (Deckjogador.Count > 0)
+        {
+            return;
+        }
+
+        Embaralhar(Deckjogador);
 
 
 
@@ -61,13 +76,82 @@ public class BattleManager : MonoBehaviour
     {
         IniciarTurnoJogador();
     }
+    
+    
+    private void Embaralhar(List<CardData> cartas)
+    {
+        for (int i = cartas.Count - 1; i > 0; i--)
+        {
+            int j = UnityEngine.Random.Range(0, i + 1);
+
+            (cartas[i], cartas[j]) = (cartas[j], cartas[i]);
+        }
+    }
+    
+    public void JogarCarta(CardData carta)
+    {
+        if (estadoAtual != BattleState.TurnoJogador)
+        {
+            return;
+        }
+
+        if (carta == null || jogador == null || inimigo == null)
+            return;
+        
+        if (!MaoJogador.Contains(carta))
+            return;
+
+        if (VelocidaddeAtual < carta.custo)
+            return;
+
+        VelocidaddeAtual -= carta.custo;
+
+        foreach (CardEffect efeito in carta.effects)
+        {
+            efeito.execute(this, jogador, inimigo);
+        }
+        
+        MaoJogador.Remove(carta);
+        Descartes.Add(carta);
+        OnCartasAtualizadas?.Invoke();
+        
+        
+        if (VerFimCombate())
+            return;
+        
+    }
+
+    private void ComprarCartas(int qtd)
+    {
+        for (int i = 0; i < qtd; i++)
+        {
+            if (Deckjogador.Count == 0)
+            {
+                if (Descartes.Count == 0)
+                {
+                    break;
+                }
+                Deckjogador.AddRange(Descartes);
+                Descartes.Clear();
+                Embaralhar(Deckjogador);
+            }
+
+            CardData card = Deckjogador[0];
+            Deckjogador.RemoveAt(0);
+            MaoJogador.Add(card);
+        }
+        
+        OnCartasAtualizadas?.Invoke();//atualiza contagem de cartas
+    }
+
+
 
     private void IniciarTurnoJogador()
     {
-        energiaAtual = maxEnergia;
+        VelocidaddeAtual = maxVelocidadde;
         estadoAtual = BattleState.InicioTurnoJogador;
+        ComprarCartas(nroCartasMao);
         
-        //comprar as cartas
         //permitir jogar cartas
         
         estadoAtual = BattleState.TurnoJogador;
@@ -80,7 +164,9 @@ public class BattleManager : MonoBehaviour
 
         estadoAtual = BattleState.FimTurnoJogador;
 
-        // descartar cartas da mão
+        Descartes.AddRange(MaoJogador);
+        MaoJogador.Clear();
+        OnCartasAtualizadas?.Invoke();
         // aplicar efeitos de fim de turno
         if (VerFimCombate())
             return;
@@ -110,34 +196,7 @@ public class BattleManager : MonoBehaviour
         IniciarTurnoJogador();
     }
 
-    public void JogarCarta(CardData carta)
-    {
-        if (estadoAtual != BattleState.InicioTurnoJogador)
-        {
-            return;
-        }
-
-        if (carta == null || jogador == null || inimigo == null)
-            return;
-
-        if (energiaAtual < carta.custo)
-            return;
-
-        energiaAtual -= carta.custo;
-        
-        //logica de descarte da carta
-        Deckjogador.Remove(carta);
-        Descartes.Add(carta);
-
-        foreach (CardEffect efeito in carta.effects)
-        {
-            efeito.execute(this, jogador, inimigo);
-        }
-        
-        
-        if (VerFimCombate())
-            return;
-    }
+   
 
 
 

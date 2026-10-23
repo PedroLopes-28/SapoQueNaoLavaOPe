@@ -15,6 +15,7 @@ MonoBehaviour:
   id: 1
   sprite: {fileID: 0}
   rarity: 0
+  desc: Causa 5 de Dano
   custo: 1
   effects:
   - {fileID: 11400000, guid: e96a1ad4b2120d44d8cba30b90df375a, type: 2}
