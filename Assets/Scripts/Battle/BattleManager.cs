@@ -1,24 +1,115 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class BattleManager : MonoBehaviour
 {
+    
+    
+    public enum BattleState
+    {
+        InicioTurnoJogador,
+        TurnoJogador,
+        FimTurnoJogador,
+        TurnoInimigo,
+        Vitoria,
+        Derrota
+    }
+
+
+    [SerializeField] private List<EnemyData> inimigosP;
+    private EnemyData inimigoEscolhido;
     public BattleUnit jogador;
     public BattleUnit inimigo;
-    
 
-    public int energiaAtual = 3;
+    private CardEffect acaoInimigo;
+    private int indiceAcaoInimigo = 0;
+    private int maxIndiceAcaoInimigo;
+    
+    //declara os visuais do jogador e inimigo
+    [SerializeField] private BattleUnitVisual jogadorView;
+    [SerializeField] private BattleUnitVisual inimigoView;
+    
+    private int energiaAtual = 3;
+    private int maxEnergia = 3;
+    public BattleState estadoAtual { get; private set; }
 
 
     private void Awake()
     {
+         jogador = new BattleUnit(Core.GameManager.Run.HP, Core.GameManager.Run.MaxHP);
+         
+        inimigoEscolhido=inimigosP[UnityEngine.Random.Range(0, inimigosP.Count)];//pega um inimigo aleatorio dos que tão aqui
         
-        jogador.vidaAtual = Core.GameManager.Run.HP;
-        inimigo.vidaAtual = 100;//colocar hp ligado no enemyData de algum jeito
+        inimigo= new BattleUnit(inimigoEscolhido.HP, inimigoEscolhido.maxHP);
+        
+        maxIndiceAcaoInimigo=inimigoEscolhido.actions.Count;//ve quantas ações no vetor de açoes do inimigo
+        
+        
+    }
+
+    private void Start()
+    {
+        IniciarTurnoJogador();
+    }
+
+    private void IniciarTurnoJogador()
+    {
+        energiaAtual = maxEnergia;
+        estadoAtual = BattleState.InicioTurnoJogador;
+        
+        //comprar as cartas
+        //permitir jogar cartas
+        
+        estadoAtual = BattleState.TurnoJogador;
+    }
+
+    public void FimTurnoJogador()
+    {
+        if (estadoAtual != BattleState.TurnoJogador)
+            return;
+
+        estadoAtual = BattleState.FimTurnoJogador;
+
+        // descartar cartas da mão
+        // aplicar efeitos de fim de turno
+        if (VerFimCombate())
+            return;
+
+        StartCoroutine(ExecutarTurnoInimigo());
+    }
+    
+    private IEnumerator ExecutarTurnoInimigo()
+    {
+        estadoAtual = BattleState.TurnoInimigo;
+
+        yield return new WaitForSeconds(1f);
+
+        acaoInimigo=inimigoEscolhido.actions[indiceAcaoInimigo];
+        acaoInimigo.execute(this,inimigo,jogador);
+       
+        if (VerFimCombate())
+            yield break;
+        
+        //avança no vetor de ações
+        indiceAcaoInimigo =(indiceAcaoInimigo + 1) % maxIndiceAcaoInimigo;
+
+        
+
+        yield return new WaitForSeconds(1f);
+
+        IniciarTurnoJogador();
     }
 
     public void JogarCarta(CardData carta)
     {
+        if (estadoAtual != BattleState.InicioTurnoJogador)
+        {
+            return;
+        }
+
         if (carta == null || jogador == null || inimigo == null)
             return;
 
@@ -31,12 +122,34 @@ public class BattleManager : MonoBehaviour
         {
             efeito.execute(this, jogador, inimigo);
         }
+
+        if (VerFimCombate())
+            return;
     }
 
-    public void FinalizarTurno()
+
+
+    private bool VerFimCombate()
     {
-       
-
-        energiaAtual = 3;
+        if (inimigo.vidaAtual <= 0)
+        {
+            estadoAtual = BattleState.Vitoria;
+            print("Vitoria!");
+            return true;
+            
+        }else if (jogador.vidaAtual <= 0)
+        {
+            estadoAtual = BattleState.Derrota;
+            print("Derrota!");
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
+
+   
+
+
 }

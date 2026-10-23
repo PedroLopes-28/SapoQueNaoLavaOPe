@@ -8,6 +8,7 @@ using Unity.VisualScripting;
 public class RunData
 {
     public int HP = 100;
+    public int MaxHP = 100;
     public int gold = 50;
     public string noAtual="0";
     
