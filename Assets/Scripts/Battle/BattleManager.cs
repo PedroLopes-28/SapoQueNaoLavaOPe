@@ -2,7 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Core;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class BattleManager : MonoBehaviour
 {
@@ -31,6 +33,8 @@ public class BattleManager : MonoBehaviour
     //declara os visuais do jogador e inimigo
     [SerializeField] private BattleUnitVisual jogadorView;
     [SerializeField] private BattleUnitVisual inimigoView;
+    private List<CardData> Deckjogador = new List<CardData>();
+    private List<CardData> Descartes = new List<CardData>();
     
     private int energiaAtual = 3;
     private int maxEnergia = 3;
@@ -46,8 +50,11 @@ public class BattleManager : MonoBehaviour
         inimigo= new BattleUnit(inimigoEscolhido.HP, inimigoEscolhido.maxHP);
         
         maxIndiceAcaoInimigo=inimigoEscolhido.actions.Count;//ve quantas ações no vetor de açoes do inimigo
-        
-        
+
+        Deckjogador = GameManager.Gman.DeckJogador.buscaTodas();//Pega todas as cartas do deck do jogador
+
+
+
     }
 
     private void Start()
@@ -117,12 +124,17 @@ public class BattleManager : MonoBehaviour
             return;
 
         energiaAtual -= carta.custo;
+        
+        //logica de descarte da carta
+        Deckjogador.Remove(carta);
+        Descartes.Add(carta);
 
         foreach (CardEffect efeito in carta.effects)
         {
             efeito.execute(this, jogador, inimigo);
         }
-
+        
+        
         if (VerFimCombate())
             return;
     }
@@ -135,12 +147,16 @@ public class BattleManager : MonoBehaviour
         {
             estadoAtual = BattleState.Vitoria;
             print("Vitoria!");
+            //ao vencer a batalha finaliza o no e carrega a cena do mapa novamente
+            //Core.GameManager.Gman.FinalizaNo(GameManager.Run.noAtual,jogador.vidaAtual, 50); atualiza o game manager
+            //SceneManager.LoadScene("Map");//volta pro mapa
             return true;
             
         }else if (jogador.vidaAtual <= 0)
         {
             estadoAtual = BattleState.Derrota;
             print("Derrota!");
+            // mostra mensagem de derrota na tela e devolve pro menu principal
             return true;
         }
         else
