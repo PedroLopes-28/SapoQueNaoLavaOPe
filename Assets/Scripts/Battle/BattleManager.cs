@@ -157,12 +157,13 @@ public class BattleManager : MonoBehaviour
 
     private void IniciarTurnoJogador()
     {
-        
+        jogador.bloqueio = 0;//acaba com o bloqueio do jogador no inicio do seu turno
+        jogadorView.AtualizarVida();
         VelocidadeAtual = MaxVelocidade;
         estadoAtual = BattleState.InicioTurnoJogador;
         ComprarCartas(nroCartasMao);
         
-        //permitir jogar cartas
+        
         
         estadoAtual = BattleState.TurnoJogador;
     }
@@ -187,6 +188,8 @@ public class BattleManager : MonoBehaviour
     
     private IEnumerator ExecutarTurnoInimigo()
     {
+        inimigo.bloqueio = 0;//no inicio do turno do inimigo remove bloqueio restante
+        inimigoView.AtualizarVida();
         print("Turno inimigo!");
         estadoAtual = BattleState.TurnoInimigo;
 
