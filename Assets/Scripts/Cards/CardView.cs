@@ -4,6 +4,7 @@ using UnityEngine.UI;
 
 public class CardView : MonoBehaviour
 {
+    [SerializeField] private Image cardImage;
     [SerializeField] private TMP_Text custoText;
     [SerializeField] private TMP_Text descricaoText;
     [SerializeField] private Button botao;
@@ -15,9 +16,11 @@ public class CardView : MonoBehaviour
     {
         carta = dados;
         battleManager = manager;
-        
+
         custoText.text = carta.custo.ToString();
         descricaoText.text = carta.desc;
+
+        cardImage.sprite = carta.sprite;
 
         botao.onClick.RemoveAllListeners();
         botao.onClick.AddListener(Jogar);
