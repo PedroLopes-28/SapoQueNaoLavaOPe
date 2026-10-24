@@ -7,6 +7,7 @@ public class CardData : ScriptableObject
     public string id;
     public Sprite sprite;
     public cardRarity rarity;
+    public string desc;
     public int custo;
     
     

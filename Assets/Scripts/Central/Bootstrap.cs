@@ -1,6 +1,5 @@
 using UnityEngine;
 
-//inicia o game manager independente da cena em que se está
 public static class Bootstrap
 {
     [RuntimeInitializeOnLoadMethod(
@@ -10,8 +9,16 @@ public static class Bootstrap
         if (Core.GameManager.Gman != null)
             return;
 
-        GameObject obj = new GameObject("GameManager");
+        GameObject prefab = Resources.Load<GameObject>(
+            "Prefabs/GameManager"
+        );
 
-        obj.AddComponent<Core.GameManager>();
+        if (prefab == null)
+        {
+            Debug.LogError("Prefab GameManager não encontrado!");
+            return;
+        }
+
+        Object.Instantiate(prefab);
     }
 }

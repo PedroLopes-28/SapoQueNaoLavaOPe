@@ -1,9 +1,14 @@
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BattleUnitVisual : MonoBehaviour
 {
     private BattleUnit unidade;
     private Animator animator;
+    
+    [SerializeField] private Slider barraVida;
+    [SerializeField] private TMP_Text hpText;
 
     private void Awake()
     {
@@ -13,13 +18,9 @@ public class BattleUnitVisual : MonoBehaviour
     public void Inicializar(BattleUnit unidade)
     {
         this.unidade = unidade;
-        AtualizarVisual();
+        AtualizarVida();
     }
-
-    public void AtualizarVisual()
-    {
-        // Atualizar barra de vida, bloqueio etc.
-    }
+    
 
     public void AnimarAtaque()
     {
@@ -29,5 +30,17 @@ public class BattleUnitVisual : MonoBehaviour
     public void AnimarDano()
     {
         animator.SetTrigger("Hit");
+    }
+    
+    public void AtualizarVida()
+    {
+        if (unidade == null)
+            return;
+
+        barraVida.maxValue = unidade.vidaMaxima;
+        barraVida.SetValueWithoutNotify(unidade.vidaAtual);
+
+        hpText.text =
+            $"{unidade.vidaAtual}/{unidade.vidaMaxima}";
     }
 }

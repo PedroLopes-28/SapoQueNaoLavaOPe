@@ -15,9 +15,10 @@ MonoBehaviour:
   id: 11
   HP: 30
   maxHP: 30
-  effects:
+  actions:
   - {fileID: 11400000, guid: 9c55e6bdaad10404d84e44e0a2ced8b5, type: 2}
   - {fileID: 11400000, guid: 9421a73c173e78642aa3b5d4e7291277, type: 2}
-  - {fileID: 11400000, guid: 00748db17a7a4144db2882af1562da5b, type: 2}
-  - {fileID: 11400000, guid: 806743c5772a5b442aa5e4dc11f2134d, type: 2}
   - {fileID: 11400000, guid: 2f7ca7993c60f3f4aa95a8accf0f0a72, type: 2}
+  - {fileID: 11400000, guid: 806743c5772a5b442aa5e4dc11f2134d, type: 2}
+  - {fileID: 11400000, guid: 00748db17a7a4144db2882af1562da5b, type: 2}
+  - {fileID: 11400000, guid: 9421a73c173e78642aa3b5d4e7291277, type: 2}
