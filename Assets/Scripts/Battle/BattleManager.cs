@@ -41,12 +41,12 @@ public class BattleManager : MonoBehaviour
     public int QtdDeck => Deckjogador.Count;
     public int QtdMao => MaoJogador.Count;
     public int QtdDescartes => Descartes.Count;
-    public int VelocidadeAtual => VelocidaddeAtual;
+    public int VelocidadeAtual = 3;
+    public int MaxVelocidade = 3;
     public IReadOnlyList<CardData> CartasNaMao => MaoJogador;
     public event Action OnCartasAtualizadas;//avisa quando atualizar os elementos visuais
     
-    private int VelocidaddeAtual = 3;
-    private int maxVelocidadde = 3;
+    
     public BattleState estadoAtual { get; private set; }
 
 
@@ -60,9 +60,14 @@ public class BattleManager : MonoBehaviour
         
         maxIndiceAcaoInimigo=inimigoEscolhido.actions.Count;//ve quantas ações no vetor de açoes do inimigo
 
-        Deckjogador = GameManager.Gman.deckJogador.buscaTodas();//Pega todas as cartas do deck do jogador
-        if (Deckjogador.Count > 0)
+        
+        Deckjogador = new List<CardData>(
+            GameManager.Gman.deckJogador.buscaTodas()
+        );
+
+        if (Deckjogador.Count == 0)
         {
+            Debug.LogError("O deck está vazio");
             return;
         }
 
@@ -74,6 +79,8 @@ public class BattleManager : MonoBehaviour
 
     private void Start()
     {
+        jogadorView.Inicializar(jogador);
+        inimigoView.Inicializar(inimigo);
         IniciarTurnoJogador();
     }
     
@@ -101,10 +108,10 @@ public class BattleManager : MonoBehaviour
         if (!MaoJogador.Contains(carta))
             return;
 
-        if (VelocidaddeAtual < carta.custo)
+        if (VelocidadeAtual < carta.custo)
             return;
 
-        VelocidaddeAtual -= carta.custo;
+        VelocidadeAtual -= carta.custo;
 
         foreach (CardEffect efeito in carta.effects)
         {
@@ -113,6 +120,8 @@ public class BattleManager : MonoBehaviour
         
         MaoJogador.Remove(carta);
         Descartes.Add(carta);
+        jogadorView.AtualizarVida();
+        inimigoView.AtualizarVida();
         OnCartasAtualizadas?.Invoke();
         
         
@@ -148,7 +157,8 @@ public class BattleManager : MonoBehaviour
 
     private void IniciarTurnoJogador()
     {
-        VelocidaddeAtual = maxVelocidadde;
+        
+        VelocidadeAtual = MaxVelocidade;
         estadoAtual = BattleState.InicioTurnoJogador;
         ComprarCartas(nroCartasMao);
         
@@ -159,6 +169,7 @@ public class BattleManager : MonoBehaviour
 
     public void FimTurnoJogador()
     {
+        print("Fim turno jogador!");
         if (estadoAtual != BattleState.TurnoJogador)
             return;
 
@@ -176,13 +187,17 @@ public class BattleManager : MonoBehaviour
     
     private IEnumerator ExecutarTurnoInimigo()
     {
+        print("Turno inimigo!");
         estadoAtual = BattleState.TurnoInimigo;
 
         yield return new WaitForSeconds(1f);
 
         acaoInimigo=inimigoEscolhido.actions[indiceAcaoInimigo];
+        print(acaoInimigo);
         acaoInimigo.execute(this,inimigo,jogador);
        
+        jogadorView.AtualizarVida();
+        inimigoView.AtualizarVida();
         if (VerFimCombate())
             yield break;
         
