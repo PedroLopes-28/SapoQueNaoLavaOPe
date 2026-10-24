@@ -9,6 +9,7 @@ public class BattleUnitVisual : MonoBehaviour
     
     [SerializeField] private Slider barraVida;
     [SerializeField] private TMP_Text hpText;
+    [SerializeField] private TMP_Text shieldCount;
 
     private void Awake()
     {
@@ -42,5 +43,6 @@ public class BattleUnitVisual : MonoBehaviour
 
         hpText.text =
             $"{unidade.vidaAtual}/{unidade.vidaMaxima}";
+        shieldCount.text = unidade.bloqueio.ToString();
     }
 }
