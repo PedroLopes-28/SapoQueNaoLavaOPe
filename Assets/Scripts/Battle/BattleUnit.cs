@@ -1,3 +1,6 @@
+using System;
+using Unity.VisualScripting.FullSerializer;
+
 public
 
 class BattleUnit
@@ -15,15 +18,19 @@ class BattleUnit
 
     public void ReceberDano(int dano)
     {
+        
         int danoRestante = UnityEngine.Mathf.Max(0, dano - bloqueio);
-
+        Console.Write(danoRestante);
         bloqueio = UnityEngine.Mathf.Max(0, bloqueio - dano);
         vidaAtual = UnityEngine.Mathf.Max(0, vidaAtual - danoRestante);
+        
+
     }
 
     public void GanharBloqueio(int quantidade)
     {
-        bloqueio = +quantidade;
+        
+        bloqueio +=quantidade;
     }
 
 }

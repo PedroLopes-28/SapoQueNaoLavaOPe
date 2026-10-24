@@ -12,3 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c38b5a0b0de0cd459623d4b1e4eb870, type: 3}
   m_Name: BloqueioDefender
   m_EditorClassIdentifier: Assembly-CSharp::BlockEffect
+  quantidade: 5

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "Cards/Effects/Damage")]
@@ -11,6 +12,7 @@ public class DamageEffect : CardEffect
         BattleUnit alvo
     )
     {
+        
         alvo.ReceberDano(quantidade);
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "BlockEffect", menuName = "Cards/Effects/BlockEffect")]
@@ -11,7 +12,8 @@ public class BlockEffect : CardEffect
         BattleUnit alvo
     )
     {
-        alvo.GanharBloqueio(quantidade);
+        
+        usuario.GanharBloqueio(quantidade);
     }
 
 }
