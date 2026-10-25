@@ -10,7 +10,8 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Gman { get; private set; }
     public static RunData Run { get; private set; }
-    [SerializeField] public CardDatabase deckJogador;
+    [SerializeField] public CardDatabase deckBase;
+    public List<CardData> deckJogador;
 
     private void Awake()
     {
@@ -23,12 +24,18 @@ public class GameManager : MonoBehaviour
         Gman = this;
         DontDestroyOnLoad(gameObject);
         Run = new RunData();
+        
+        deckJogador = new List<CardData>(
+            deckBase.buscaTodas()
+        );
     }
 
     public void NovaRun()
     {
          Run = new RunData();
-
+         deckJogador = new List<CardData>(
+             deckBase.buscaTodas()
+         );// reinicia o baralho
          SceneManager.LoadScene("Map");
     }
     

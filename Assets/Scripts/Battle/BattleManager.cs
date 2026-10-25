@@ -60,10 +60,8 @@ public class BattleManager : MonoBehaviour
         
         maxIndiceAcaoInimigo=inimigoEscolhido.actions.Count;//ve quantas ações no vetor de açoes do inimigo
 
-        
-        Deckjogador = new List<CardData>(
-            GameManager.Gman.deckJogador.buscaTodas()
-        );
+
+        Deckjogador = GameManager.Gman.deckJogador;
 
         if (Deckjogador.Count == 0)
         {
