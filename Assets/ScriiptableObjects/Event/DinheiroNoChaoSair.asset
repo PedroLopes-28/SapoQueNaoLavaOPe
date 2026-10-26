@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83d62343196fc664f8316f69c0260781, type: 3}
   m_Name: DinheiroNoChaoSair
   m_EditorClassIdentifier: Assembly-CSharp::SairOption
-  descricao: 
+  descricao: "Sair correndo? (Afinal o dinheiro n\xE3o \xE9 seu)"

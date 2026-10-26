@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a9130ffc45ec8541a2b4cc12409fd4a, type: 3}
   m_Name: DinheiroNoChaoOuro
   m_EditorClassIdentifier: Assembly-CSharp::GanharOuro
-  descricao: 
-  ouro: 0
+  descricao: Pegar os 100 de ouro e correr?
+  ouro: 100
