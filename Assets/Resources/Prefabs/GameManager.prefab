@@ -44,4 +44,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08e3308a7af8503469b054ec9d32f4c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Core.GameManager
-  deckJogador: {fileID: 11400000, guid: 022ce6b52c711a445a6a2bc46168327d, type: 2}
+  deckBase: {fileID: 11400000, guid: 022ce6b52c711a445a6a2bc46168327d, type: 2}
+  deckJogador:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
