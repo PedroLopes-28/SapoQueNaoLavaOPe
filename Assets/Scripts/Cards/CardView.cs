@@ -17,7 +17,7 @@ public class CardView : MonoBehaviour
         carta = dados;
         battleManager = manager;
 
-        custoText.text = carta.custo.ToString();
+        custoText.text = "Custo "+carta.custo.ToString();
         descricaoText.text = carta.desc;
 
         cardImage.sprite = carta.sprite;

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: BanhoDeLama
   m_EditorClassIdentifier: Assembly-CSharp::CardData
   id: 3
-  sprite: {fileID: 21300000, guid: 5860a83acd843a44891432c9ab9dff26, type: 3}
+  sprite: {fileID: 21300000, guid: 5a2e29652efe91a46ba95207fbe31818, type: 3}
   rarity: 0
   desc: Causa 12 de Dano
   custo: 2
