@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Defender
   m_EditorClassIdentifier: Assembly-CSharp::CardData
   id: 2
-  sprite: {fileID: 21300000, guid: 24d3678aa63a69e4ebf2b928c47998c5, type: 3}
+  sprite: {fileID: 21300000, guid: 4a4a8b878f35d084489e1a840a6e6e13, type: 3}
   rarity: 0
   desc: "D\xE1 5 de Bloqueio"
   custo: 1

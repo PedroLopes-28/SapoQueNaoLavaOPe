@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Golpe
   m_EditorClassIdentifier: Assembly-CSharp::CardData
   id: 1
-  sprite: {fileID: 21300000, guid: 1477364f44c873f4c9b8b1c2c8c5d82a, type: 3}
+  sprite: {fileID: 21300000, guid: 12cb419b6647f8b48ac7bb873fcccd4e, type: 3}
   rarity: 0
   desc: Causa 5 de Dano
   custo: 1
