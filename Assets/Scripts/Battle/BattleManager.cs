@@ -33,6 +33,7 @@ public class BattleManager : MonoBehaviour
     //declara os visuais do jogador e inimigo
     [SerializeField] private BattleUnitVisual jogadorView;
     [SerializeField] private BattleUnitVisual inimigoView;
+    [SerializeField] private VictoryUI victoryUI;
 
     [SerializeField] private int nroCartasMao = 5;
     private List<CardData> Deckjogador = new List<CardData>();
@@ -220,8 +221,11 @@ public class BattleManager : MonoBehaviour
     {
         if (inimigo.vidaAtual <= 0)
         {
+            if (estadoAtual == BattleState.Vitoria)
+                return true;
             estadoAtual = BattleState.Vitoria;
             print("Vitoria!");
+            victoryUI.MostrarVictory();
             //ao vencer a batalha finaliza o no e carrega a cena do mapa novamente
             //Core.GameManager.Gman.FinalizaNo(GameManager.Run.noAtual,jogador.vidaAtual, 50); atualiza o game manager
             //SceneManager.LoadScene("Map");//volta pro mapa
@@ -232,6 +236,7 @@ public class BattleManager : MonoBehaviour
             estadoAtual = BattleState.Derrota;
             print("Derrota!");
             // mostra mensagem de derrota na tela e devolve pro menu principal
+            //SceneManager.LoadScene("Menu")
             return true;
         }
         else
