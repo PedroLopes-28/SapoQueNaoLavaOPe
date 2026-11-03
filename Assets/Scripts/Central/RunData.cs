@@ -8,11 +8,12 @@ using Unity.VisualScripting;
 public class RunData
 {
     public int HP = 100;
+    public int MaxHP = 100;
     public int gold = 50;
-    public int noAtual = 0;
+    public string noAtual="0";
     
     
-    public List<string> deck= new List<string>(); //cartas
+    public List<string> deck= new List<string>(); //cartas do jogador
     public List<string> nosConcluidos= new List<string>();// nos que já foram feitos
     public List<string> legendary= new List<string>(); // cartas de custo 0, pode se escolher uma a cada turno para jogar
     public List<string> blessings = new List<string>(); //efeitos passivos permanentes

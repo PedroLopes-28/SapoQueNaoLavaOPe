@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 624cce89dbcfc554f9f9ef35840e1d11, type: 3}
+  m_Name: DinheiroNoChao
+  m_EditorClassIdentifier: Assembly-CSharp::EventData
+  id: 30
+  titulo: Dinheiro Perdido
+  "hist\xF3ria": "Olha s\xF3! no seu caminho para o castelo voce achou uma bolsa
+    de ouro no ch\xE3o! Mas tome cuidado... o dono dela pode estar perto. o que voc\xEA
+    faz?"
+  opcoes:
+  - {fileID: 11400000, guid: d1e66632eeb3767408f59ac7349a9151, type: 2}
+  - {fileID: 11400000, guid: f1b64ceaf5960454eb1b8a89785dad5f, type: 2}
