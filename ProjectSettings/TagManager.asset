@@ -57,6 +57,15 @@ TagManager:
   - name: After
     uniqueID: 2574911809
     locked: 0
+  - name: Ground_Titlemap
+    uniqueID: 2309524011
+    locked: 0
+  - name: Water_Titlemap
+    uniqueID: 1707954731
+    locked: 0
+  - name: Path_Titlemap
+    uniqueID: 3931314435
+    locked: 0
   m_RenderingLayers:
   - Default
   m_MigratedRenderPipelines: []

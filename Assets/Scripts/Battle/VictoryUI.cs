@@ -38,7 +38,34 @@ public class VictoryUI : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        victoryCanvas.SetActive(false);
+        if (victoryCanvas != null)
+            victoryCanvas.SetActive(false);
+
+        if (returnMapButton != null)
+            returnMapButton.onClick.AddListener(VoltarAoMapa);
+        else
+            Debug.LogWarning("Return Map Button não foi configurado no Inspector.");
+    }
+
+    public void VoltarAoMapa()
+    {
+        if (retornandoMapa)
+            return;
+
+        retornandoMapa = true;
+
+        if (GameManager.Gman == null || GameManager.Run == null)
+        {
+            Debug.LogError("GameManager/Run não encontrado ao retornar ao mapa.");
+            retornandoMapa = false;
+            return;
+        }
+
+        GameManager.Gman.FinalizaNo(
+            GameManager.Run.noAtual,
+            GameManager.Run.HP,
+            GameManager.Run.gold
+        );
     }
 
     // Update is called once per frame

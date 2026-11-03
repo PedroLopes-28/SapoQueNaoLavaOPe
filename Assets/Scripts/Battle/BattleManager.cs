@@ -1,15 +1,12 @@
+
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using Core;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class BattleManager : MonoBehaviour
 {
-    
-    
     public enum BattleState
     {
         InicioTurnoJogador,
@@ -20,71 +17,90 @@ public class BattleManager : MonoBehaviour
         Derrota
     }
 
-
     [SerializeField] private List<EnemyData> inimigosP;
     private EnemyData inimigoEscolhido;
+
     public BattleUnit jogador;
     public BattleUnit inimigo;
 
     private CardEffect acaoInimigo;
     private int indiceAcaoInimigo = 0;
     private int maxIndiceAcaoInimigo;
-    
-    //declara os visuais do jogador e inimigo
+
     [SerializeField] private BattleUnitVisual jogadorView;
     [SerializeField] private BattleUnitVisual inimigoView;
     [SerializeField] private VictoryUI victoryUI;
     [SerializeField] private DefeatUI defeatUI;
 
     [SerializeField] private int nroCartasMao = 5;
+
     private List<CardData> Deckjogador = new List<CardData>();
-    private List<CardData> MaoJogador= new List<CardData>();
+    private List<CardData> MaoJogador = new List<CardData>();
     private List<CardData> Descartes = new List<CardData>();
+
     public int QtdDeck => Deckjogador.Count;
     public int QtdMao => MaoJogador.Count;
     public int QtdDescartes => Descartes.Count;
+
     public int VelocidadeAtual = 3;
     public int MaxVelocidade = 3;
-    public IReadOnlyList<CardData> CartasNaMao => MaoJogador;
-    public event Action OnCartasAtualizadas;//avisa quando atualizar os elementos visuais
-    
-    
-    public BattleState estadoAtual { get; private set; }
 
+    public IReadOnlyList<CardData> CartasNaMao => MaoJogador;
+
+    public event Action OnCartasAtualizadas;
+
+    public BattleState estadoAtual { get; private set; }
 
     private void Awake()
     {
-         jogador = new BattleUnit(Core.GameManager.Run.HP, Core.GameManager.Run.MaxHP);
-         
-        inimigoEscolhido=inimigosP[UnityEngine.Random.Range(0, inimigosP.Count)];//pega um inimigo aleatorio dos que tão aqui
-        
-        inimigo= new BattleUnit(inimigoEscolhido.HP, inimigoEscolhido.maxHP);
-        
-        maxIndiceAcaoInimigo=inimigoEscolhido.actions.Count;//ve quantas ações no vetor de açoes do inimigo
+        // Reinicia os dados locais da batalha.
+        MaoJogador.Clear();
+        Descartes.Clear();
 
+        indiceAcaoInimigo = 0;
+        VelocidadeAtual = MaxVelocidade;
 
-        Deckjogador = GameManager.Gman.deckJogador;
+        // Recupera a vida atual do jogador.
+        jogador = new BattleUnit(
+            GameManager.Run.HP,
+            GameManager.Run.MaxHP
+        );
+
+        // Escolhe um inimigo aleatório.
+        inimigoEscolhido = inimigosP[
+            UnityEngine.Random.Range(0, inimigosP.Count)
+        ];
+
+        inimigo = new BattleUnit(
+            inimigoEscolhido.HP,
+            inimigoEscolhido.maxHP
+        );
+
+        maxIndiceAcaoInimigo = inimigoEscolhido.actions.Count;
+
+        // Cria uma cópia do deck original da run.
+        // Assim, as alterações durante a batalha não afetam o deck permanente.
+        Deckjogador = new List<CardData>(
+            GameManager.Gman.deckJogador
+        );
 
         if (Deckjogador.Count == 0)
         {
-            Debug.LogError("O deck está vazio");
+            Debug.LogError("O deck está vazio!");
             return;
         }
 
         Embaralhar(Deckjogador);
-
-
-
     }
 
     private void Start()
     {
         jogadorView.Inicializar(jogador);
         inimigoView.Inicializar(inimigo);
+
         IniciarTurnoJogador();
     }
-    
-    
+
     private void Embaralhar(List<CardData> cartas)
     {
         for (int i = cartas.Count - 1; i > 0; i--)
@@ -94,17 +110,15 @@ public class BattleManager : MonoBehaviour
             (cartas[i], cartas[j]) = (cartas[j], cartas[i]);
         }
     }
-    
+
     public void JogarCarta(CardData carta)
     {
         if (estadoAtual != BattleState.TurnoJogador)
-        {
             return;
-        }
 
         if (carta == null || jogador == null || inimigo == null)
             return;
-        
+
         if (!MaoJogador.Contains(carta))
             return;
 
@@ -117,17 +131,17 @@ public class BattleManager : MonoBehaviour
         {
             efeito.execute(this, jogador, inimigo);
         }
-        
+
         MaoJogador.Remove(carta);
         Descartes.Add(carta);
+
         jogadorView.AtualizarVida();
         inimigoView.AtualizarVida();
+
         OnCartasAtualizadas?.Invoke();
-        
-        
+
         if (VerFimCombate())
             return;
-        
     }
 
     private void ComprarCartas(int qtd)
@@ -137,40 +151,42 @@ public class BattleManager : MonoBehaviour
             if (Deckjogador.Count == 0)
             {
                 if (Descartes.Count == 0)
-                {
                     break;
-                }
+
                 Deckjogador.AddRange(Descartes);
                 Descartes.Clear();
+
                 Embaralhar(Deckjogador);
             }
 
             CardData card = Deckjogador[0];
+
             Deckjogador.RemoveAt(0);
             MaoJogador.Add(card);
         }
-        
-        OnCartasAtualizadas?.Invoke();//atualiza contagem de cartas
+
+        OnCartasAtualizadas?.Invoke();
     }
-
-
 
     private void IniciarTurnoJogador()
     {
-        jogador.bloqueio = 0;//acaba com o bloqueio do jogador no inicio do seu turno
+        jogador.bloqueio = 0;
+
         jogadorView.AtualizarVida();
+
         VelocidadeAtual = MaxVelocidade;
+
         estadoAtual = BattleState.InicioTurnoJogador;
+
         ComprarCartas(nroCartasMao);
-        
-        
-        
+
         estadoAtual = BattleState.TurnoJogador;
     }
 
     public void FimTurnoJogador()
     {
         print("Fim turno jogador!");
+
         if (estadoAtual != BattleState.TurnoJogador)
             return;
 
@@ -178,45 +194,46 @@ public class BattleManager : MonoBehaviour
 
         Descartes.AddRange(MaoJogador);
         MaoJogador.Clear();
+
         OnCartasAtualizadas?.Invoke();
-        // aplicar efeitos de fim de turno
+
         if (VerFimCombate())
             return;
 
         StartCoroutine(ExecutarTurnoInimigo());
     }
-    
+
     private IEnumerator ExecutarTurnoInimigo()
     {
-        inimigo.bloqueio = 0;//no inicio do turno do inimigo remove bloqueio restante
+        inimigo.bloqueio = 0;
+
         inimigoView.AtualizarVida();
+
         print("Turno inimigo!");
+
         estadoAtual = BattleState.TurnoInimigo;
 
         yield return new WaitForSeconds(1f);
 
-        acaoInimigo=inimigoEscolhido.actions[indiceAcaoInimigo];
+        acaoInimigo = inimigoEscolhido.actions[indiceAcaoInimigo];
+
         print(acaoInimigo);
-        acaoInimigo.execute(this,inimigo,jogador);
-       
+
+        acaoInimigo.execute(this, inimigo, jogador);
+
         jogadorView.AtualizarVida();
         inimigoView.AtualizarVida();
+
         if (VerFimCombate())
             yield break;
-        
-        //avança no vetor de ações
-        indiceAcaoInimigo =(indiceAcaoInimigo + 1) % maxIndiceAcaoInimigo;
 
-        
+        indiceAcaoInimigo =
+            (indiceAcaoInimigo + 1) % maxIndiceAcaoInimigo;
 
         yield return new WaitForSeconds(1f);
 
         IniciarTurnoJogador();
     }
-
-   
-
-
 
     private bool VerFimCombate()
     {
@@ -224,26 +241,28 @@ public class BattleManager : MonoBehaviour
         {
             if (estadoAtual == BattleState.Vitoria)
                 return true;
+
             estadoAtual = BattleState.Vitoria;
+
+            GameManager.Run.HP = jogador.vidaAtual;
+
             print("Vitoria!");
+
             victoryUI.MostrarVictory();
+
             return true;
-            
-        }else if (jogador.vidaAtual <= 0)
+        }
+        else if (jogador.vidaAtual <= 0)
         {
             estadoAtual = BattleState.Derrota;
+
             print("Derrota!");
+
             defeatUI.MostraDefeat();
-            
+
             return true;
         }
-        else
-        {
-            return false;
-        }
+
+        return false;
     }
-
-   
-
-
 }
