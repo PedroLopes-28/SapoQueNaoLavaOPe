@@ -47,6 +47,10 @@ public class EventManager : MonoBehaviour
 
         opcao.execute(Gman);
 
-        // Futuramente: finalizar o nó e retornar ao mapa
+        GameManager.Gman.FinalizaNo(
+            GameManager.Run.noAtual,
+            GameManager.Run.HP,
+            GameManager.Run.gold
+        );
     }
 }
