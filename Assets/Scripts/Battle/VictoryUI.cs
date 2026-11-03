@@ -26,9 +26,6 @@ public class VictoryUI : MonoBehaviour
     [SerializeField] private TMP_Text goldText;
     [SerializeField] private Button claimGoldButton;
 
-    [Header("Navegação")]
-    [SerializeField] private Button returnMapButton;
-
     private readonly List<RewardCardView> cartasVisuais = new();
 
     private bool cartaEscolhida;
@@ -40,33 +37,8 @@ public class VictoryUI : MonoBehaviour
     {
         if (victoryCanvas != null)
             victoryCanvas.SetActive(false);
-
-        if (returnMapButton != null)
-            returnMapButton.onClick.AddListener(VoltarAoMapa);
-        else
-            Debug.LogWarning("Return Map Button não foi configurado no Inspector.");
     }
-
-    public void VoltarAoMapa()
-    {
-        if (retornandoMapa)
-            return;
-
-        retornandoMapa = true;
-
-        if (GameManager.Gman == null || GameManager.Run == null)
-        {
-            Debug.LogError("GameManager/Run não encontrado ao retornar ao mapa.");
-            retornandoMapa = false;
-            return;
-        }
-
-        GameManager.Gman.FinalizaNo(
-            GameManager.Run.noAtual,
-            GameManager.Run.HP,
-            GameManager.Run.gold
-        );
-    }
+    
 
     // Update is called once per frame
     public void MostrarVictory()
