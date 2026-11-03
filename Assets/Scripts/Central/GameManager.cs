@@ -101,11 +101,7 @@ namespace Core
         public void ReceberDano(int dano)
         {
             Run.HP = Mathf.Max(0, Run.HP - dano);
-
-            if (Run.HP < 1)
-            {
-                // GameOver
-            }
+            
         }
 
         public int GastarOuro(int qtd)

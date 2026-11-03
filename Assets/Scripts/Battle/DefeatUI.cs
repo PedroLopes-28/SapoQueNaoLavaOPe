@@ -25,8 +25,8 @@ public class DefeatUI : MonoBehaviour
         defeatCanvas.SetActive(false);
     }
 
-    public void retornaMenu()
+    public void RetornaMenu()
     {
-        //função de finalizar a run é chamada aqui
+        GameManager.Gman.NovaRun();
     }
 }
