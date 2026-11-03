@@ -62,8 +62,8 @@ public class BattleManager : MonoBehaviour
 
         // Recupera a vida atual do jogador.
         jogador = new BattleUnit(
-            GameManager.Run.HP,
-            GameManager.Run.MaxHP
+            GameManager.Run.MaxHP,
+            GameManager.Run.HP
         );
 
         // Escolhe um inimigo aleatório.
@@ -72,8 +72,8 @@ public class BattleManager : MonoBehaviour
         ];
 
         inimigo = new BattleUnit(
-            inimigoEscolhido.HP,
-            inimigoEscolhido.maxHP
+            inimigoEscolhido.maxHP,
+            inimigoEscolhido.HP
         );
 
         maxIndiceAcaoInimigo = inimigoEscolhido.actions.Count;
@@ -264,5 +264,15 @@ public class BattleManager : MonoBehaviour
         }
 
         return false;
+    }
+    
+    public void VoltarAoMapa()
+    {
+
+        GameManager.Gman.FinalizaNo(
+            GameManager.Run.noAtual,
+            jogador.vidaAtual,
+            GameManager.Run.gold
+        );
     }
 }
