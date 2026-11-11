@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2757588466843201504}
   - component: {fileID: 3291560411126573152}
+  - component: {fileID: 3258237739115171363}
   m_Layer: 0
   m_Name: CardPrefab
   m_TagString: Untagged
@@ -56,6 +57,18 @@ MonoBehaviour:
   custoText: {fileID: 1670835029420818033}
   descricaoText: {fileID: 1846056226551907003}
   botao: {fileID: 5530730444735968857}
+--- !u!114 &3258237739115171363
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1269137318621300955}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b21065b563763bb419dae4c8ab47e77b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CardHover
 --- !u!1 &3490902471609211731
 GameObject:
   m_ObjectHideFlags: 0

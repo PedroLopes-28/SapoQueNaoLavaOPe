@@ -31,6 +31,7 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private BattleUnitVisual inimigoView;
     [SerializeField] private VictoryUI victoryUI;
     [SerializeField] private DefeatUI defeatUI;
+    [SerializeField] private BattleUI battleUI;
 
     [SerializeField] private int nroCartasMao = 5;
 
@@ -142,6 +143,7 @@ public class BattleManager : MonoBehaviour
 
         if (VerFimCombate())
             return;
+        battleUI.atualizaFan();
     }
 
     private void ComprarCartas(int qtd)
