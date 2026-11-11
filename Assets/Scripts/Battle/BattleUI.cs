@@ -16,6 +16,8 @@ public class BattleUI : MonoBehaviour
     
     private readonly List<CardView> cartasVisuais = new();
     private readonly List<CardData> cartasExibidas = new();
+    
+    [SerializeField] private HandFanLayout handFan;
 
 
     private void Start()
@@ -108,12 +110,13 @@ public class BattleUI : MonoBehaviour
 
             cartasVisuais.Add(visual);
             cartasExibidas.Add(carta);
+            handFan.DefinirCartas(cartasVisuais);
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    public void atualizaFan()
     {
-        
+        handFan.DefinirCartas(cartasVisuais);
     }
+
 }
