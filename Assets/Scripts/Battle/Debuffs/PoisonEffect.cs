@@ -7,6 +7,9 @@ public class PoisonEffect : DebuffEffect
 
     public override void Aplicar(BattleUnit unidade)
     {
+        
         unidade.ReceberDano(danoPorTurno);
+        this.duracao--;
+        this.danoPorTurno = duracao;
     }
 }
