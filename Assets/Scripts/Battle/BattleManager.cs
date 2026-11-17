@@ -116,9 +116,15 @@ public class BattleManager : MonoBehaviour
         }
     }
 
+    
+    private bool cartaEmExecucao = false;
+
     public void JogarCarta(CardData carta)
     {
         if (estadoAtual != BattleState.TurnoJogador)
+            return;
+
+        if (cartaEmExecucao)
             return;
 
         if (carta == null || jogador == null || inimigo == null)
@@ -130,25 +136,52 @@ public class BattleManager : MonoBehaviour
         if (VelocidadeAtual < carta.custo)
             return;
 
+        StartCoroutine(ExecutarCarta(carta));
+    }
+
+    private IEnumerator ExecutarCarta(CardData carta)
+    {
+        cartaEmExecucao = true;
+
+        // Consome a energia da carta
         VelocidadeAtual -= carta.custo;
 
+        // Inicia a animação do jogador
+        jogadorView.AnimarEfeito(carta.corAnimacao);
+
+        // Aguarda o momento do impacto
+        yield return new WaitForSeconds(0.5f);
+
+        // Executa os efeitos da carta
         foreach (CardEffect efeito in carta.effects)
         {
             efeito.execute(this, jogador, inimigo);
         }
 
-        MaoJogador.Remove(carta);
-        Descartes.Add(carta);
-
+        // Atualiza os visuais
         jogadorView.AtualizarVida();
         inimigoView.AtualizarVida();
 
+        // Anima o inimigo recebendo o efeito
+        inimigoView.AnimarDano();
+
+        // Aguarda um pouco para mostrar o resultado
+        yield return new WaitForSeconds(0.2f);
+
+        // Remove a carta da mão
+        MaoJogador.Remove(carta);
+        Descartes.Add(carta);
+
         OnCartasAtualizadas?.Invoke();
 
-        if (VerFimCombate())
-            return;
-        battleUI.atualizaFan();
+        if (!VerFimCombate())
+        {
+            battleUI.atualizaFan();
+        }
+
+        cartaEmExecucao = false;
     }
+
 
     private void ComprarCartas(int qtd)
     {
@@ -218,8 +251,6 @@ public class BattleManager : MonoBehaviour
         if (VerFimCombate())
             return;
 
-        AntesTurnoInimigo();
-
         StartCoroutine(ExecutarTurnoInimigo());
     }
     
@@ -248,37 +279,62 @@ public class BattleManager : MonoBehaviour
     }
 
 
+    
     private IEnumerator ExecutarTurnoInimigo()
     {
+        // Início do turno do inimigo
         inimigo.bloqueio = 0;
-
         inimigoView.AtualizarVida();
 
-        print("Turno inimigo!");
+        Debug.Log("Turno inimigo!");
+
+        // Processa debuffs de início do turno
+        if (AntesTurnoInimigo())
+            yield break;
 
         estadoAtual = BattleState.TurnoInimigo;
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
 
+        // Seleciona a ação do inimigo
         acaoInimigo = inimigoEscolhido.actions[indiceAcaoInimigo];
 
-        print(acaoInimigo);
+        Debug.Log("Ação inimiga: " + acaoInimigo.name);
 
+        // Inicia a animação com a cor do efeito
+        inimigoView.AnimarEfeito(acaoInimigo.cor);
+
+        // Aguarda o momento do impacto
+        yield return new WaitForSeconds(0.5f);
+
+        // Executa a ação do inimigo
         acaoInimigo.execute(this, inimigo, jogador);
 
+        // Atualiza a interface de vida e bloqueio
         jogadorView.AtualizarVida();
         inimigoView.AtualizarVida();
 
+        // Anima o jogador recebendo o impacto
+        jogadorView.AnimarDano();
+
+        // Verifica se o combate terminou
         if (VerFimCombate())
             yield break;
 
+        // Avança para a próxima ação
         indiceAcaoInimigo =
             (indiceAcaoInimigo + 1) % maxIndiceAcaoInimigo;
 
-        yield return new WaitForSeconds(1f);
-        DepoisTurnoInimigo();
+        yield return new WaitForSeconds(0.5f);
+
+        // Processa debuffs de fim de turno
+        if (DepoisTurnoInimigo())
+            yield break;
+
+        // Inicia o próximo turno do jogador
         IniciarTurnoJogador();
     }
+
     
     private bool DepoisTurnoInimigo()
     {

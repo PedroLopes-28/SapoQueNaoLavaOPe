@@ -3,7 +3,8 @@ using UnityEngine;
 public abstract class DebuffEffect : ScriptableObject
 {
     public string nome;
-    public int duracaoBase;
+    public bool after;
+    public int duracao;
 
     public abstract void Aplicar(BattleUnit unidade);
 }

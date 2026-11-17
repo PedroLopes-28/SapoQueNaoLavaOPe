@@ -9,6 +9,7 @@ public class CardData : ScriptableObject
     public cardRarity rarity;
     public string desc;
     public int custo;
+    public Color corAnimacao = Color.white;
     
     
     public List<CardEffect> effects;

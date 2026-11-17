@@ -17,5 +17,6 @@ MonoBehaviour:
   rarity: 0
   desc: Causa 12 de Dano
   custo: 2
+  corAnimacao: {r: 0.4943396, g: 0.22291918, b: 0.22291918, a: 1}
   effects:
   - {fileID: 11400000, guid: f429352ff196c514592211568d21b3f2, type: 2}
