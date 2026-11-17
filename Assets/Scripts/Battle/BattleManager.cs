@@ -9,10 +9,14 @@ public class BattleManager : MonoBehaviour
 {
     public enum BattleState
     {
-        InicioTurnoJogador,
+        AntesTurnoJogador,
         TurnoJogador,
-        FimTurnoJogador,
+        DepoisTurnoJogador,
+
+        AntesTurnoInimigo,
         TurnoInimigo,
+        DepoisTurnoInimigo,
+
         Vitoria,
         Derrota
     }
@@ -177,12 +181,24 @@ public class BattleManager : MonoBehaviour
         jogadorView.AtualizarVida();
 
         VelocidadeAtual = MaxVelocidade;
-
-        estadoAtual = BattleState.InicioTurnoJogador;
+        
+        AntesTurnoJogador();
 
         ComprarCartas(nroCartasMao);
 
         estadoAtual = BattleState.TurnoJogador;
+    }
+    
+    private bool AntesTurnoJogador()
+    {
+        estadoAtual = BattleState.AntesTurnoJogador;
+
+        jogador.ProcessarInicioTurno();
+
+        jogadorView.AtualizarVida();
+        inimigoView.AtualizarVida();
+
+        return VerFimCombate();
     }
 
     public void FimTurnoJogador()
@@ -192,7 +208,7 @@ public class BattleManager : MonoBehaviour
         if (estadoAtual != BattleState.TurnoJogador)
             return;
 
-        estadoAtual = BattleState.FimTurnoJogador;
+        DepoisTurnoJogador();
 
         Descartes.AddRange(MaoJogador);
         MaoJogador.Clear();
@@ -202,8 +218,35 @@ public class BattleManager : MonoBehaviour
         if (VerFimCombate())
             return;
 
+        AntesTurnoInimigo();
+
         StartCoroutine(ExecutarTurnoInimigo());
     }
+    
+    private bool DepoisTurnoJogador()
+    {
+        estadoAtual = BattleState.DepoisTurnoJogador;
+
+        jogador.ProcessarFimTurno();
+
+        jogadorView.AtualizarVida();
+        inimigoView.AtualizarVida();
+
+        return VerFimCombate();
+    }
+    
+    private bool AntesTurnoInimigo()
+    {
+        estadoAtual = BattleState.AntesTurnoInimigo;
+
+        inimigo.ProcessarInicioTurno();
+
+        jogadorView.AtualizarVida();
+        inimigoView.AtualizarVida();
+
+        return VerFimCombate();
+    }
+
 
     private IEnumerator ExecutarTurnoInimigo()
     {
@@ -233,8 +276,20 @@ public class BattleManager : MonoBehaviour
             (indiceAcaoInimigo + 1) % maxIndiceAcaoInimigo;
 
         yield return new WaitForSeconds(1f);
-
+        DepoisTurnoInimigo();
         IniciarTurnoJogador();
+    }
+    
+    private bool DepoisTurnoInimigo()
+    {
+        estadoAtual = BattleState.DepoisTurnoInimigo;
+
+        inimigo.ProcessarFimTurno();
+
+        jogadorView.AtualizarVida();
+        inimigoView.AtualizarVida();
+
+        return VerFimCombate();
     }
 
     private bool VerFimCombate()

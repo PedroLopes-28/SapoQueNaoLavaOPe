@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Unity.VisualScripting.FullSerializer;
 
 public
@@ -8,6 +9,7 @@ class BattleUnit
     public int vidaAtual;
     public int vidaMaxima;
     public int bloqueio;
+    public List<DebuffEffect> debuffs = new List<DebuffEffect>();
 
     public BattleUnit(int vidaMaxima, int vidaAtual)
     {
@@ -31,6 +33,16 @@ class BattleUnit
     {
         
         bloqueio +=quantidade;
+    }
+
+    public void ProcessarInicioTurno()
+    {
+        
+    }
+
+    public void ProcessarFimTurno()
+    {
+        
     }
 
 }
