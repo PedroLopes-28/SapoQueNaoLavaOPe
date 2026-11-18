@@ -12,4 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44b3fb17c97c21143aeb805c14ab73cd, type: 3}
   m_Name: BarroVivoVeneno
   m_EditorClassIdentifier: Assembly-CSharp::DebuffApply
-  cor: {r: 0, g: 0, b: 0, a: 0}
+  cor: {r: 0.15883929, g: 1, b: 0, a: 0}
+  debuff: {fileID: 11400000, guid: 7038111168610b34dad6cbff1689efc1, type: 2}

@@ -19,4 +19,4 @@ MonoBehaviour:
   custo: 1
   corAnimacao: {r: 0.20551655, g: 0.6754716, b: 0.1414667, a: 1}
   effects:
-  - {fileID: 0}
+  - {fileID: 11400000, guid: 0a28cf0a7a8a4854f8a9ea083d6460d4, type: 2}

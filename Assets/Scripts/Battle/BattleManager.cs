@@ -230,6 +230,8 @@ public class BattleManager : MonoBehaviour
 
         jogadorView.AtualizarVida();
         inimigoView.AtualizarVida();
+        jogadorView.AtualizarDebuffs();
+        inimigoView.AtualizarDebuffs();
 
         return VerFimCombate();
     }
@@ -274,6 +276,8 @@ public class BattleManager : MonoBehaviour
 
         jogadorView.AtualizarVida();
         inimigoView.AtualizarVida();
+        jogadorView.AtualizarDebuffs();
+        inimigoView.AtualizarDebuffs();
 
         return VerFimCombate();
     }
@@ -300,11 +304,9 @@ public class BattleManager : MonoBehaviour
         acaoInimigo = inimigoEscolhido.actions[indiceAcaoInimigo];
 
         Debug.Log("Ação inimiga: " + acaoInimigo.name);
-
-        // Inicia a animação com a cor do efeito
+        
         inimigoView.AnimarEfeito(acaoInimigo.cor);
-
-        // Aguarda o momento do impacto
+        
         yield return new WaitForSeconds(0.5f);
 
         // Executa a ação do inimigo
@@ -313,6 +315,7 @@ public class BattleManager : MonoBehaviour
         // Atualiza a interface de vida e bloqueio
         jogadorView.AtualizarVida();
         inimigoView.AtualizarVida();
+        
 
         // Anima o jogador recebendo o impacto
         jogadorView.AnimarDano();
@@ -341,9 +344,12 @@ public class BattleManager : MonoBehaviour
         estadoAtual = BattleState.DepoisTurnoInimigo;
 
         inimigo.ProcessarFimTurno();
+        
 
         jogadorView.AtualizarVida();
         inimigoView.AtualizarVida();
+        jogadorView.AtualizarDebuffs();
+        inimigoView.AtualizarDebuffs();
 
         return VerFimCombate();
     }

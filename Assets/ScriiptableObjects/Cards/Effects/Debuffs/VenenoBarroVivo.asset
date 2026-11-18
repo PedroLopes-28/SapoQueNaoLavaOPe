@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e12c3d0e5d65fb34986d4c26b7822dae, type: 3}
   m_Name: VenenoBarroVivo
   m_EditorClassIdentifier: Assembly-CSharp::PoisonEffect
-  nome: 
+  nome: Veneno
   after: 0
-  duracao: 0
-  danoPorTurno: 0
+  duracao: -2
+  danoPorTurno: -2

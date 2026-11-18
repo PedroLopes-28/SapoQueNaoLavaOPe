@@ -11,6 +11,8 @@ public class BattleUnitVisual : MonoBehaviour
     [SerializeField] private Slider barraVida;
     [SerializeField] private TMP_Text hpText;
     [SerializeField] private TMP_Text shieldCount;
+    [SerializeField] private Transform debuffContainer;
+    [SerializeField] private DebuffIconUI debuffIconPrefab;
     
     [SerializeField] private TMP_Text damageText;
 
@@ -236,4 +238,32 @@ public class BattleUnitVisual : MonoBehaviour
             $"{unidade.vidaAtual}/{unidade.vidaMaxima}";
         shieldCount.text = unidade.bloqueio.ToString();
     }
+    
+    
+    public void AtualizarDebuffs()
+    {
+        // Remove os ícones antigos
+        foreach (Transform filho in debuffContainer)
+        {
+            Destroy(filho.gameObject);
+        }
+
+        // Cria um ícone para cada debuff ativo
+        foreach (DebuffEffect ativo in unidade.debuffs)
+        {
+            if (ativo == null || ativo.duracao <= 0)
+                continue;
+
+            DebuffIconUI icone = Instantiate(
+                debuffIconPrefab,
+                debuffContainer
+            );
+
+            icone.Inicializar(
+                ativo.icone,
+                ativo.duracao
+            );
+        }
+    }
+
 }
