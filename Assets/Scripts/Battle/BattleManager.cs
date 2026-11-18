@@ -178,7 +178,9 @@ public class BattleManager : MonoBehaviour
         {
             battleUI.atualizaFan();
         }
-
+        
+        jogadorView.AtualizarDebuffs();
+        inimigoView.AtualizarDebuffs();
         cartaEmExecucao = false;
     }
 

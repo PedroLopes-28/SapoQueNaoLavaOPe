@@ -14,5 +14,6 @@ public class DebuffApply : CardEffect
     {
         DebuffEffect d = debuff;
         alvo.debuffs.Add(d);
+        
     }
 }
