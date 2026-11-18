@@ -12,7 +12,7 @@ public class DebuffApply : CardEffect
         BattleUnit alvo
     )
     {
-        
-        alvo.debuffs.Add(debuff);
+        DebuffEffect d = debuff;
+        alvo.debuffs.Add(d);
     }
 }
