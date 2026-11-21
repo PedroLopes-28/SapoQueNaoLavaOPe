@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 44b3fb17c97c21143aeb805c14ab73cd, type: 3}
+  m_Name: SemEscudoBanho
+  m_EditorClassIdentifier: Assembly-CSharp::DebuffApply
+  cor: {r: 0.41568628, g: 0.25653967, b: 0.5053146, a: 0.58431375}
+  debuff: {fileID: 11400000, guid: 3eb2050fa67695b4ea674e957a6fd8f1, type: 2}

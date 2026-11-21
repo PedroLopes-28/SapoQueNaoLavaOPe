@@ -13,6 +13,7 @@ public class BattleUnitVisual : MonoBehaviour
     [SerializeField] private TMP_Text shieldCount;
     [SerializeField] private Transform debuffContainer;
     [SerializeField] private DebuffIconUI debuffIconPrefab;
+    [SerializeField] private DebuffTooltipUI debuffTooltip;
     
     [SerializeField] private TMP_Text damageText;
 
@@ -240,18 +241,18 @@ public class BattleUnitVisual : MonoBehaviour
     }
     
     
+    
+    
     public void AtualizarDebuffs()
     {
-        // Remove os ícones antigos
         foreach (Transform filho in debuffContainer)
         {
             Destroy(filho.gameObject);
         }
 
-        // Cria um ícone para cada debuff ativo
-        foreach (DebuffEffect ativo in unidade.debuffs)
+        foreach (DebuffEffect debuff in unidade.debuffs)
         {
-            if (ativo == null || ativo.duracao <= 0)
+            if (debuff == null || debuff.duracao <= 0)
                 continue;
 
             DebuffIconUI icone = Instantiate(
@@ -259,11 +260,9 @@ public class BattleUnitVisual : MonoBehaviour
                 debuffContainer
             );
 
-            icone.Inicializar(
-                ativo.icone,
-                ativo.duracao
-            );
+            icone.Inicializar(debuff, debuffTooltip);
         }
     }
+
 
 }
