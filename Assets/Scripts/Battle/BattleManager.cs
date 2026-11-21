@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Core;
+using TMPro;
 using UnityEngine;
 
 public class BattleManager : MonoBehaviour
@@ -31,6 +32,11 @@ public class BattleManager : MonoBehaviour
     private int indiceAcaoInimigo = 0;
     private int maxIndiceAcaoInimigo;
 
+
+
+    [SerializeField] private TMP_Text WarningText;
+    private Coroutine warningCoroutine;
+    
     [SerializeField] private BattleUnitVisual jogadorView;
     [SerializeField] private BattleUnitVisual inimigoView;
     [SerializeField] private VictoryUI victoryUI;
@@ -114,6 +120,51 @@ public class BattleManager : MonoBehaviour
 
             (cartas[i], cartas[j]) = (cartas[j], cartas[i]);
         }
+    }
+    
+    
+    private IEnumerator MostrarAvisoTurno(string mensagem)
+    {
+        WarningText.text = mensagem;
+
+        // Começa totalmente visível
+        WarningText.alpha = 1f;
+        WarningText.gameObject.SetActive(true);
+
+        
+        yield return new WaitForSeconds(2f);
+
+        
+        float duracaoFade = 1f;
+        float tempo = 0f;
+
+        while (tempo < duracaoFade)
+        {
+            tempo += Time.deltaTime;
+
+            WarningText.alpha = Mathf.Lerp(
+                1f,
+                0f,
+                Mathf.Clamp01(tempo / duracaoFade)
+            );
+
+            yield return null;
+        }
+
+        WarningText.alpha = 0f;
+        WarningText.gameObject.SetActive(false);
+
+        warningCoroutine = null;
+    }
+
+    private void AvisarTurno(string mensagem)
+    {
+        if (warningCoroutine != null)
+            StopCoroutine(warningCoroutine);
+
+        warningCoroutine = StartCoroutine(
+            MostrarAvisoTurno(mensagem)
+        );
     }
 
     
@@ -222,6 +273,7 @@ public class BattleManager : MonoBehaviour
         ComprarCartas(nroCartasMao);
 
         estadoAtual = BattleState.TurnoJogador;
+        AvisarTurno("Seu Turno! Gaste sua energia para sujar o inimigo!");
     }
     
     private bool AntesTurnoJogador()
@@ -288,6 +340,8 @@ public class BattleManager : MonoBehaviour
     
     private IEnumerator ExecutarTurnoInimigo()
     {
+        AvisarTurno("Turno do inimigo! Ele vai tentar te limpar!");
+        
         // Início do turno do inimigo
         inimigo.bloqueio = 0;
         inimigoView.AtualizarVida();

@@ -90,7 +90,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DebuffIconUI
   imagem: {fileID: 1749280717890578121}
-  duracaoText: {fileID: 6833433773889387352}
+  duracao: {fileID: 6833433773889387352}
 --- !u!1 &9001949572443652382
 GameObject:
   m_ObjectHideFlags: 0
