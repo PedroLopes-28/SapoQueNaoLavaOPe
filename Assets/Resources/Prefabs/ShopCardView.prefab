@@ -55,6 +55,7 @@ MonoBehaviour:
   cardImage: {fileID: 4284832563339201865}
   custoText: {fileID: 1670835029420818033}
   descricaoText: {fileID: 1846056226551907003}
+  botao: {fileID: 5530730444735968857}
 --- !u!1 &3490902471609211731
 GameObject:
   m_ObjectHideFlags: 0
