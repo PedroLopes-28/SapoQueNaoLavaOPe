@@ -183,4 +183,8 @@ public class ShopManager : MonoBehaviour
         warningText.text = mensagem;
         warningText.gameObject.SetActive(true);
     }
+    public void AtualizarOuroLoja()
+    {
+        AtualizarOuro();
+    }
 }
